@@ -1,0 +1,141 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="LibraryManagementSysteem.SiteMaster" %>
+
+<%@ Import Namespace="System.Data" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="~/Style/angucomplete-alt.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width" />
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=272931&clcid=0x409 --%>
+                <%--Framework Scripts--%>
+
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="jquery.ui.combined" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+        <header>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <img src="Images/head.jpg" alt="Insert Logo Here" width="1000"
+                        height="200" id="Insert_logo" style="background: #C6D580; display: block;" />
+
+                    <style type="text/css">
+                        .navbar-nav > li > a {
+                            font-weight: bold !important;
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                            color: lightgray !important;
+                            text-align: center;
+                        }
+
+
+                        .navbar-nav li a:focus {
+                            background-color: #20B2AA !important;
+                            border-radius: 15px;
+                            height: 100px;
+                            padding-top: 10px !important;
+                            padding-bottom: 15px !important;
+                            text-align: center;
+                            margin-top: 0px;
+                        }
+
+                        .navbar-nav li a:hover {
+                            color: white !important;
+                        }
+
+                        .navbar-nav > li:hover {
+                            background-color: #20B2AA !important;
+                            border-radius: 5px;
+                            height: 100px;
+                            padding-top: 10px !important;
+                            padding-bottom: 15px !important;
+                            text-align: center;
+                            margin-top: 0px;
+                        }
+                    </style>
+
+                    <nav class="float-left" style="background-color: #3b5998; width: 1000px; height: 50px">
+                        <ul id="menu" class="float-left navbar-nav navbar-right .navbar-default" style="padding-top:10px;">
+                            <%
+                                HttpContext context = base.Context;
+                                HttpRequest request = context.Request;
+                               
+                                string pageName = System.IO.Path.GetFileNameWithoutExtension(request.RawUrl);
+                                if (pageName != "RentBook" && pageName != "BookList")
+                                {
+                                    if (context.Session["selectedList"] != null)
+                                        context.Session.Remove("selectedList");
+                                }
+                                String RoleId = Convert.ToString(Session["Role"]);
+                                
+                                if (RoleId != "2")
+                                { 
+                            %>
+                            <li><a runat="server" href="~/SearchBook">Home</a></li>
+                            <li><a runat="server" href="~/RentBook">Rent Book</a></li>
+                            <li><a runat="server" href="~/AddNewBook">Add New Book</a></li>
+                            <li><a runat="server" href="~/IssueBook">Issue Book</a></li>
+                            <li><a runat="server" href="~/AddNewMember">New Member</a></li>
+                            <li><a runat="server" href="~/">Log Out</a></li>
+
+                            <%
+                                }
+                                else
+                                {
+                            %>
+                            <li><a runat="server" href="~/SearchBook">Home</a></li>
+                            <li><a runat="server" href="~/RentBook">Rent Book</a></li>
+                            <li><a runat="server" href="~/IssueBook">Issue Book</a></li>
+                            <li><a runat="server" href="~/">Log Out</a></li>
+                            <%
+                                }
+                            %>
+                        </ul>
+                    </nav>
+                </div>
+                <asp:Label ID="lblLogin" runat="server" style="font-size:18px; float:right; font-weight:bold; color:#3b5998"></asp:Label>
+            </div>
+            
+        </header>
+        <div id="body">
+            <asp:ContentPlaceHolder runat="server" ID="FeaturedContent">
+            </asp:ContentPlaceHolder>
+            <section class="content-wrapper main-content clear-fix">
+                <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+            </section>
+        </div>
+        <footer>
+            <div class="content-wrapper">
+                <div class="float-left">
+                    <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                </div>
+            </div>
+        </footer>
+    </form>
+</body>
+</html>
